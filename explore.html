@@ -24,6 +24,58 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
     <link rel="shortcut icon" type="image/png" href="assets/icon.png"/>
+
+    <script>
+        // Global variables. page is dynamic, the others are static
+        // Created by Jacob
+        let page = 0;
+        let pages = 3;
+        let images_per_page = 3;
+        let image_path_folder = "assets/";
+        let image_paths = [// List  of images to include in explore
+            "8-Bf0O6rtRvp56Ake.png",
+            "8-IVFn1KW8SvbvrXZ.png",
+            "8-Q0XuKKNaVzg6D5X.png",
+            "8-u0VT63bWs80wlPx.png",
+            "8-Bf0O6rtRvp56Ake.png",
+            "8-IVFn1KW8SvbvrXZ.png",
+            "8-Q0XuKKNaVzg6D5X.png",
+            "8-u0VT63bWs80wlPx.png",
+            "8-Bf0O6rtRvp56Ake.png",
+        ];
+
+        function pagination_offset(x){ // moves the active page to the left or right one
+            pagination((page+x) % pages); // Although modulo allows for loop around, the move is inactivated
+        }
+
+        function pagination(p){ // Changes the displayed images and active links
+            // Get all of the pagination elements
+            let elems = document.getElementsByClassName("_pagination");
+            for(const elem of elems){ // Remove disabled and active to reset
+                elem.classList.remove("disabled");
+                elem.classList.remove("active");
+            }
+
+            document.getElementById(p.toString()).classList.add("active"); // add active
+
+            if(p == 0){ //Add disabled to left or right depending on which end we are located at (if applicable)
+                document.getElementById("left").classList.add("disabled");
+            } else if(p == pages-1){
+                document.getElementById("right").classList.add("disabled");
+            }
+
+            // Get picture elements
+            let pics = document.getElementsByClassName("_pagination_image");
+            let i = 0 // used for iteration
+            for(const pic of pics){ // Change the path for each image
+                pic.src = image_path_folder.concat(image_paths[i + images_per_page * p])
+                i += 1;
+            }
+
+            page = p; // update page number
+        }
+    </script>
+
 </head>
 <body>
 <header>
@@ -57,46 +109,36 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4">
-                    <img src="assets/8-IVFn1KW8SvbvrXZ.png" class="img-thumbnail">
+                    <img src="assets/8-IVFn1KW8SvbvrXZ.png" class="img-thumbnail _pagination_image" alt="Image 1">
                 </div>
                 <div class="col-md-4">
-                    <img src="assets/8-Q0XuKKNaVzg6D5X.png" class="img-thumbnail">
+                    <img src="assets/8-Q0XuKKNaVzg6D5X.png" class="img-thumbnail _pagination_image" alt="Image 2">
                 </div>
                 <div class="col-md-4">
-                    <img src="assets/8-u0VT63bWs80wlPx.png" class="img-thumbnail">
+                    <img src="assets/8-u0VT63bWs80wlPx.png" class="img-thumbnail _pagination_image" alt="Image 3">
                 </div>
             </div>
         </div>
 
         <div class="container">
             <ul class="pagination">
-                <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                <li class="_pagination page-item disabled" id="left">
+                    <a class="page-link" href="#" tabindex="-1" onclick="pagination_offset(-1)"><<</a>
                 </li>
-                <li class="page-item active">
-                    <a class="page-link" href="#">1</a>
+                <li class="_pagination page-item active" id="0">
+                    <a class="page-link active" href="#" onclick="pagination(1-1)">1</a>
                 </li>
-                <li class="page-item">
-                    <a class="page-link" href="#">2</a>
+                <li class="_pagination page-item" id="1">
+                    <a class="page-link" href="#" onclick="pagination(2-1)">2</a>
                 </li>
-                <li class="page-item">
-                    <a class="page-link" href="#">3</a>
+                <li class="_pagination page-item" id="2">
+                    <a class="page-link" href="#" onclick="pagination(3-1)">3</a>
                 </li>
-                <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
+                <li class="_pagination page-item" id="right">
+                    <a class="page-link" href="#" tabindex="1" onclick="pagination_offset(1)">>></a>
                 </li>
             </ul>
         </div>
-    </section>
-    <section>
-
-    </section>
-    <section>
-
-    </section>
-    <section>
-
-
     </section>
 </main>
 <footer class="footer fixed-bottom">
